@@ -84,6 +84,7 @@ npx prisma db seed
 cd packages/react-widgets
 npm run build
 ```
+*   **EcoGrocer Sandbox Page**: To test and play with the widgets visually, open **`packages/react-widgets/index.html`** in your browser. (Ensure the Node.js/Express API is running on Port `8081` to handle the data fetching!).
 
 ### 3.5 Run the Next.js Partner Portal
 Install monorepo dependencies and start the portal developer server:
