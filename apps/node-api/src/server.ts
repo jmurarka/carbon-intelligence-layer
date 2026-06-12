@@ -13,7 +13,7 @@ import {
 const prisma = new PrismaClient();
 
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.NODE_PORT || 8081;
 
 // Middleware
 app.use(cors({
