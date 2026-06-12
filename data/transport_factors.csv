@@ -1,0 +1,6 @@
+mode_name,co2e_per_km_passenger,co2e_per_km_ton,source_dataset
+diesel_van,0.0000,0.2500,defra
+ev_car,0.0500,0.0200,defra
+electric_bicycle,0.0020,0.0005,defra
+motorcycle,0.1100,0.0500,defra
+petrol_car,0.1700,0.0800,defra

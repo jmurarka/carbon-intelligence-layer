@@ -1,0 +1,6 @@
+{
+  "name": "@carbon-companion/shared-configs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared configurations for Carbon Companion workspace packages"
+}

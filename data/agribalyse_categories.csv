@@ -1,0 +1,8 @@
+category_name,parent_name,co2e_per_kg,unspsc_code
+Groceries,,0.0,50000000
+Dairy & Eggs,Groceries,2.50,50130000
+Fruits & Vegetables,Groceries,0.40,50160000
+Meat & Seafood,Groceries,12.00,50110000
+Electronics,,0.0,43000000
+Smartphones,Electronics,60.00,43191501
+Laptops,Electronics,250.00,43211503

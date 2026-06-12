@@ -1,0 +1,26 @@
+{
+  "name": "@carbon-companion/db-schema",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Database models and schemas for Carbon Companion",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "db:generate": "prisma generate --schema=schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=schema.prisma",
+    "db:push": "prisma db push --schema=schema.prisma",
+    "db:seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "prisma": "^5.1.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

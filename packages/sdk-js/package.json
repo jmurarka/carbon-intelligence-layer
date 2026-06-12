@@ -1,0 +1,23 @@
+{
+  "name": "@carbon-companion/sdk-js",
+  "version": "1.0.0",
+  "description": "Frictionless JavaScript SDK and UI widgets for Carbon Companion",
+  "main": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "lit": "^2.8.0"
+  },
+  "devDependencies": {
+    "@carbon-companion/shared-configs": "workspace:*",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "rollup": "^3.28.0",
+    "typescript": "^5.1.6"
+  }
+}

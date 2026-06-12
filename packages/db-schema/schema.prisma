@@ -1,0 +1,113 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Partner Accounts
+model Partner {
+  partnerId        String             @id @default(uuid()) @map("partner_id")
+  companyName      String             @map("company_name")
+  industryVertical String             @map("industry_vertical")
+  tier             String             @default("standard")
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+  keys             PartnerKey[]
+  catalog          ProductCatalog[]
+  overrides        PartnerOverride[]
+
+  @@map("partners")
+}
+
+// Hashed Partner API Keys
+model PartnerKey {
+  keyId      String   @id @default(uuid()) @map("key_id")
+  partnerId  String   @map("partner_id")
+  keyPreview String   @map("key_preview")
+  hashedKey  String   @unique @map("hashed_key")
+  status     String   @default("active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  partner    Partner  @relation(fields: [partnerId], references: [partnerId], onDelete: Cascade)
+
+  @@map("partner_keys")
+}
+
+// Master Categories Hierarchy
+model Category {
+  categoryId String            @id @default(uuid()) @map("category_id")
+  name       String
+  parentId   String?           @map("parent_id")
+  unspscCode String?           @map("unspsc_code")
+  createdAt  DateTime          @default(now()) @map("created_at")
+  parent     Category?         @relation("CategoryHierarchy", fields: [parentId], references: [categoryId])
+  children   Category[]        @relation("CategoryHierarchy")
+  factors    EmissionFactor[]
+  products   ProductCatalog[]
+  overrides  PartnerOverride[]
+
+  @@map("categories")
+}
+
+// Global Emission Factors Registry
+model EmissionFactor {
+  factorId      String    @id @default(uuid()) @map("factor_id")
+  sourceDataset String    @map("source_dataset")
+  sourceCode    String    @map("source_code")
+  co2ePerKg     Decimal   @map("co2e_per_kg") @db.Decimal(10, 4)
+  scopeType     Int       @map("scope_type")
+  categoryId    String    @map("category_id")
+  validFrom     DateTime  @map("valid_from")
+  validTo       DateTime? @map("valid_to")
+  metadata      Json?
+  category      Category  @relation(fields: [categoryId], references: [categoryId])
+
+  @@map("emission_factors")
+}
+
+// Partner Custom Product Catalog
+model ProductCatalog {
+  catalogItemId String   @id @default(uuid()) @map("catalog_item_id")
+  partnerId     String   @map("partner_id")
+  sku           String
+  gtin          String?
+  title         String
+  categoryId    String   @map("category_id")
+  attributes    Json?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  partner       Partner  @relation(fields: [partnerId], references: [partnerId], onDelete: Cascade)
+  category      Category @relation(fields: [categoryId], references: [categoryId])
+
+  @@unique([partnerId, sku])
+  @@map("product_catalog")
+}
+
+// Partner-Specific Score Overrides
+model PartnerOverride {
+  overrideId   String   @id @default(uuid()) @map("override_id")
+  partnerId    String   @map("partner_id")
+  categoryId   String?  @map("category_id")
+  sku          String?
+  customFactor Decimal  @map("custom_factor") @db.Decimal(10, 4)
+  justification String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  partner      Partner  @relation(fields: [partnerId], references: [partnerId], onDelete: Cascade)
+  category     Category? @relation(fields: [categoryId], references: [categoryId])
+
+  @@map("partner_overrides")
+}
+
+// Transport Emission Factors
+model TransportFactor {
+  transportId        String   @id @default(uuid()) @map("transport_id")
+  modeName           String   @map("mode_name")
+  co2ePerKmPassenger Decimal  @map("co2e_per_km_passenger") @db.Decimal(10, 4)
+  co2ePerKmTon       Decimal  @map("co2e_per_km_ton") @db.Decimal(10, 4)
+  sourceDataset      String   @map("source_dataset")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  @@map("transport_factors")
+}

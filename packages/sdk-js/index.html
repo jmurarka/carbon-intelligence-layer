@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carbon Companion SDK Verification</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --carbon-font: 'Outfit', sans-serif;
+      --carbon-border-radius: 12px;
+    }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      color: #1f2937;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 30px;
+    }
+
+    h1 {
+      grid-column: span 2;
+      font-size: 32px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #065f46;
+    }
+
+    h1 span {
+      background: linear-gradient(to right, #10b981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .shop-side, .sdk-side {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(6, 95, 70, 0.03);
+    }
+
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      border-bottom: 2px solid #ecfdf5;
+      padding-bottom: 8px;
+    }
+
+    .product-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .product-row:last-child {
+      border-bottom: none;
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .product-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .product-price {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .event-log {
+      background: #1e293b;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 15px;
+      border-radius: 12px;
+      height: 180px;
+      overflow-y: auto;
+      border: 1px solid #334155;
+    }
+
+    .event-line {
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #334155;
+      padding-bottom: 4px;
+    }
+
+    .event-line span {
+      color: #34d399;
+    }
+
+    .event-line label {
+      color: #f472b6;
+    }
+  </style>
+
+  <!-- Load our built SDK UMD Bundle -->
+  <script type="module" src="./dist/index.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Carbon Companion: <span>SDK Widgets Integration</span></h1>
+
+    <!-- Left Side: Mock Shop Store View -->
+    <div class="shop-side">
+      <div class="panel">
+        <h2>🛍️ Shopping Cart Items</h2>
+        
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-title">Almond Milk 1L</span>
+            <span class="product-price">$4.50</span>
+          </div>
+          <!-- Badge Custom Element -->
+          <carbon-companion-badge 
+            sku="sku-almondmilk-002" 
+            apiKey="cc_live_testkey123"
+            apiHost="http://localhost:8080"
+          ></carbon-companion-badge>
+        </div>
+
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-title">Premium Beef Steak</span>
+            <span class="product-price">$12.99</span>
+          </div>
+          <!-- Badge Custom Element -->
+          <carbon-companion-badge 
+            sku="sku-beefsteak-003" 
+            apiKey="cc_live_testkey123"
+            apiHost="http://localhost:8080"
+          ></carbon-companion-badge>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>💡 Eco-Swap Alternatives</h2>
+        <!-- Eco Swap Custom Element -->
+        <carbon-companion-eco-swap 
+          sku="sku-almondmilk-002" 
+          apiKey="cc_live_testkey123"
+          apiHost="http://localhost:8080"
+          limit="1"
+        ></carbon-companion-eco-swap>
+      </div>
+
+      <div class="panel">
+        <h2>📋 SDK Interaction Event Logs</h2>
+        <div class="event-log" id="log-window">
+          <div class="event-line">[System] <span>Listening for custom SDK events...</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Checkout Summary -->
+    <div class="sdk-side">
+      <!-- Checkout Summary Custom Element -->
+      <carbon-companion-checkout-summary
+        id="checkout-widget"
+        items='[{"sku":"sku-almondmilk-002","quantity":1,"price_cents":450},{"sku":"sku-beefsteak-003","quantity":1,"price_cents":1299}]'
+        logistics='{"transport_mode":"diesel_van","distance_km":6.8}'
+        apiKey="cc_live_testkey123"
+        apiHost="http://localhost:8080"
+      ></carbon-companion-checkout-summary>
+    </div>
+  </div>
+
+  <script>
+    const logWindow = document.getElementById('log-window');
+
+    function logEvent(title, detail) {
+      const line = document.createElement('div');
+      line.className = 'event-line';
+      const time = new Date().toLocaleTimeString();
+      line.innerHTML = `[${time}] <label>${title}</label>: <span>${JSON.stringify(detail)}</span>`;
+      logWindow.appendChild(line);
+      logWindow.scrollTop = logWindow.scrollHeight;
+    }
+
+    // Listen to swap event dispatched by `<carbon-companion-eco-swap>`
+    document.addEventListener('carbon-item-swapped', (e) => {
+      logEvent('carbon-item-swapped', e.detail);
+      alert(`Swap requested! Original: ${e.detail.originalSku} -> Injected Swap: ${e.detail.newSku}`);
+    });
+
+    // Listen to offset checkbox event dispatched by `<carbon-companion-checkout-summary>`
+    document.addEventListener('carbon-offset-changed', (e) => {
+      logEvent('carbon-offset-changed', e.detail);
+    });
+  </script>
+</body>
+</html>

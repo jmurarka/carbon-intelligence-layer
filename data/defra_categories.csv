@@ -1,0 +1,4 @@
+category_name,parent_name,co2e_per_kg,unspsc_code
+Beverages,,0.0,50200000
+Coffee & Tea,Beverages,1.50,50201700
+Soft Drinks,Beverages,0.80,50202300

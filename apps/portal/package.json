@@ -1,0 +1,26 @@
+{
+  "name": "@carbon-companion/portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Next.js dashboard and admin interface for Carbon Companion partners",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^13.4.12",
+    "@prisma/client": "^5.1.1",
+    "@carbon-companion/db-schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "@types/react": "^18.2.17",
+    "@types/react-dom": "^18.2.7",
+    "prisma": "^5.1.1",
+    "typescript": "^5.1.6"
+  }
+}

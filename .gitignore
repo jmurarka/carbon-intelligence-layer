@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+.pnpm-store/
+
+# Virtual Environment
+.venv/
+__pycache__/
+*.pyc
+
+# Go build outputs
+apps/api/api-server
+apps/api/api-server.exe
+
+# Build and cache directories
+dist/
+.next/
+out/
+.turbo/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Go binaries and test outputs
+apps/api/carbon-companion-api
+apps/api/carbon-companion-api.exe
+apps/api/carbon-companion-api.test
+*.test
+*.test.exe
