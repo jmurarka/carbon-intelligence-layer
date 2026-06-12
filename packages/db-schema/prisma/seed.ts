@@ -61,9 +61,9 @@ async function main() {
   // 3. Seeding Categories from CSV Maps
   console.log('🗂️ Parsing categories from CSV...');
   
-  const agribalysePath = path.resolve(__dirname, '../../../../data/agribalyse_categories.csv');
-  const defraPath = path.resolve(__dirname, '../../../../data/defra_categories.csv');
-  const transportPath = path.resolve(__dirname, '../../../../data/transport_factors.csv');
+  const agribalysePath = path.resolve(__dirname, '../../../data/agribalyse_categories.csv');
+  const defraPath = path.resolve(__dirname, '../../../data/defra_categories.csv');
+  const transportPath = path.resolve(__dirname, '../../../data/transport_factors.csv');
 
   const agriCsv = parseCSV(agribalysePath);
   const defraCsv = parseCSV(defraPath);
