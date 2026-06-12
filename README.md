@@ -8,8 +8,10 @@ Carbon Companion is a high-performance, embedded carbon-intelligence layer desig
 
 The codebase is organized as a monorepo using `pnpm` workspaces and `Turborepo`:
 
-*   **`apps/api/`**: High-performance Go scoring engine and API gateway. Serves product scoring, batch, checkout order logistics, alternatives suggestions, and custom catalog uploads.
+*   **`apps/api/`**: High-performance Go scoring engine and API gateway. Serves product scoring, batch, checkout order logistics, alternatives suggestions, and custom catalog uploads (Port `8080`).
+*   **`apps/node-api/`**: Production-quality Express/TypeScript gateway serving product scoring, batch lookup, order checkout offset aggregation, and commute travel options (Port `8081`).
 *   **`apps/portal/`**: Next.js partner dashboard/admin interface for viewing analytics and managing custom product factor overrides.
+*   **`packages/react-widgets/`**: Modern, embeddable React component library supplying glassmorphic product label badges, interactive checkout summary offsets, and commute comparison components.
 *   **`packages/sdk-js/`**: Zero-dependency frontend SDK using **Lit Web Components** (renders badges and checkout widgets inside encapsulated Shadow DOM boundaries to prevent CSS collision).
 *   **`packages/db-schema/`**: Centralized PostgreSQL database configurations, Prisma schema definitions, and automated seeder scripts.
 *   **`data/`**: Standard LCA carbon emission datasets parsed dynamically by the seeder:
@@ -65,15 +67,25 @@ npx prisma db push
 npx prisma db seed
 ```
 
-### 3.3 Start the Go API Server
-Configure database connectivity in your environment or local `.env` and start the server:
-```bash
-cd apps/api
-go run .
-```
-The server will run on port `8080` by default.
+### 3.3 Start the APIs
+*   **Go API Server** (runs on port `8080`):
+    ```bash
+    cd apps/api
+    go run .
+    ```
+*   **Node.js/Express API Gateway** (runs on port `8081`):
+    ```bash
+    cd apps/node-api
+    npm run dev
+    ```
 
-### 3.4 Run the Next.js Partner Portal
+### 3.4 Compile & Build React Widgets
+```bash
+cd packages/react-widgets
+npm run build
+```
+
+### 3.5 Run the Next.js Partner Portal
 Install monorepo dependencies and start the portal developer server:
 ```bash
 # In the repository root
@@ -82,7 +94,7 @@ cd apps/portal
 npx pnpm dev
 ```
 
-### 3.5 Run Frontend SDK Web Components
+### 3.6 Run Frontend SDK Web Components
 ```bash
 cd packages/sdk-js
 npm run dev
@@ -91,11 +103,20 @@ npm run dev
 ---
 
 ## 4. Running the Tests
-Execute the Go unit and integration test suite:
-```bash
-cd apps/api
-go test -v .
-```
+*   **Go Unit and Integration Tests**:
+    ```bash
+    cd apps/api
+    go test -v .
+    ```
+*   **Node.js Express API Tests** (with database mock fallback option):
+    ```bash
+    cd apps/node-api
+    npm run test
+    ```
+*   **Full Monorepo Workspace Validation** (Turborepo CLI run):
+    ```bash
+    npx pnpm test
+    ```
 
 ---
 
@@ -107,11 +128,16 @@ go test -v .
     *   Stateless Go API endpoints: single scoring `GET /v1/scores/product`, batch `POST /v1/scores/batch`, checkout order summary `POST /v1/scores/checkout`, alternatives recommendation engine `GET /v1/scores/suggestions`.
     *   Lit Web Components widget with local session storage caching.
     *   Next.js React admin panel for catalog override configurations.
-*   **Phase 2 Matching Engine**:
+*   **Phase 2 Node API Gateway & React Widgets**:
+    *   Express REST backend serving `GET /carbon-score/:product_id`, `POST /carbon-score/batch`, `POST /checkout/summary`, and `GET /commute/options` endpoints.
+    *   Custom sliding-window rate limiter and SHA-256 HMAC-based API Key middleware.
+    *   Prisma category traversal score algorithm with hierarchical parent fallback resolver.
+    *   Sleek custom React Components package (`@carbon-companion/react-widgets`) bundling glassmorphic tags, interactive summaries, and delivery commute option matrices.
+*   **Phase 3 Matching Engine**:
     *   Token-based classification parsing (Jaccard similarity index + synonym mapping dictionary) to match unclassified products to standard categories.
     *   Batch catalog uploader `POST /v1/catalog/upload` with dynamic upserts (`ON CONFLICT DO UPDATE`).
     *   Contextual tech-brand protection filtering to prevent electronic brands (e.g. "Apple MacBook") from mapping to produce categories (e.g. "Fruits & Vegetables").
-*   **Phase 3 Scalability & Integrations**:
+*   **Phase 4 Scalability & Integrations**:
     *   Sub-millisecond Read-Through Redis caching.
     *   Write-Through deferred cache invalidation on save/update hooks.
     *   Non-blocking async ClickHouse logging batch pipeline for analytics ingestion.
