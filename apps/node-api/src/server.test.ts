@@ -1,3 +1,6 @@
+// Clear DATABASE_URL to force offline/mock fallback mode in tests
+process.env.DATABASE_URL = '';
+
 import request from 'supertest';
 import app from './server';
 
@@ -149,4 +152,55 @@ describe('Carbon Companion Express API Gateway Tests', () => {
 		expect(res.body[0].mode).toBe('diesel_van');
 		expect(res.body[0].co2eKg).toBe(2.7); // 0.18 * 15 = 2.7
 	});
+
+	// 6. User Sync and Registration Tests
+	it('should register a new anonymous user and return sync credentials', async () => {
+		const res = await request(app)
+			.post('/user/register')
+			.set('Authorization', `Bearer ${mockToken}`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.userId).toBeDefined();
+		expect(res.body.backupCode).toBeDefined();
+		expect(res.body.backupCode).toContain('cc-backup-');
+	});
+
+	it('should accept synced carbon logs for a user', async () => {
+		const payload = {
+			userId: 'usr-test-12345',
+			logs: [
+				{
+					productId: 'sku-beefsteak-003',
+					productTitle: 'Beef Steak',
+					categoryName: 'Meat & Seafood',
+					co2eKg: 4.8,
+					priceCents: 1200,
+					createdAt: new Date().toISOString()
+				}
+			]
+		};
+
+		const res = await request(app)
+			.post('/user/sync')
+			.set('Authorization', `Bearer ${mockToken}`)
+			.send(payload);
+
+		expect(res.status).toBe(200);
+		expect(res.body.success).toBe(true);
+		expect(res.body.count).toBe(1);
+	});
+
+	it('should retrieve synced user savings history and weekly aggregates', async () => {
+		const res = await request(app)
+			.get('/user/history/usr-test-12345')
+			.set('Authorization', `Bearer ${mockToken}`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.totalCo2eKg).toBeDefined();
+		expect(res.body.totalSavedCo2eKg).toBeDefined();
+		expect(res.body.logs).toBeDefined();
+		expect(res.body.weeklySavings).toBeDefined();
+		expect(res.body.weeklySavings[0].week).toBe('Current Week');
+	});
 });
+

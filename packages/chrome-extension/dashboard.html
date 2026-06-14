@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Carbon Companion: Personal Impact Portal</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg class="leaf-logo" viewBox="0 0 24 24">
+          <path d="M17 8C8 10 5.9 16.17 3.8 21c4-.2 9.9-1.68 15-7.22 3.96-4.3 2-10.78 2-10.78S17.8 5 17 8zM6 18c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" opacity=".15"/>
+          <path d="M2 22c0-5.52 4.48-10 10-10 1.93 0 3.72.55 5.25 1.5L20 10.75C20.67 9.17 21 7.33 21 5.37c0-2.42-1.96-4.37-4.38-4.37-2.92 0-5.5 1.5-6.9 3.75L6.25 1.25C4.75 2.78 4.2 4.57 4.2 6.5c0 5.52 4.48 10 10 10 .85 0 1.67-.1 2.47-.3L13.7 20.3C13.15 20.75 12.6 21 12 21c-5.52 0-10-4.48-10-10zM12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+        </svg>
+        <span>Carbon Companion Portal</span>
+      </div>
+      <div class="user-meta">
+        <span class="user-id-label">Sync Code: </span>
+        <code id="user-sync-id" title="Click to copy">CC-BACKUP-CODE</code>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Top Overview Row -->
+      <section class="stats-row">
+        <div class="stat-card glass glow-green">
+          <div class="stat-icon">🌳</div>
+          <div class="stat-details">
+            <span class="label">Total Carbon Saved</span>
+            <span id="lbl-total-saved" class="value text-green">0.0 kg</span>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon">🛒</div>
+          <div class="stat-details">
+            <span class="label">Items Tracked</span>
+            <span id="lbl-total-items" class="value">0 items</span>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon">⚖️</div>
+          <div class="stat-details">
+            <span class="label">Weekly Average</span>
+            <span id="lbl-avg-spent" class="value">0.0 kg</span>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon">🛡️</div>
+          <div class="stat-details">
+            <span class="label">Budget Compliance</span>
+            <span id="lbl-compliance" class="value text-blue">100%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grid layout for Charts and Tables -->
+      <div class="dashboard-grid">
+        <!-- Visual chart card -->
+        <div class="grid-card glass chart-card">
+          <h3>Weekly CO₂e History</h3>
+          <div class="chart-wrapper">
+            <div id="trend-bar-chart" class="css-bar-chart">
+              <!-- Visual bars populated by javascript -->
+            </div>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="color-box bg-red"></span> Carbon Footprint</span>
+              <span class="legend-item"><span class="color-box bg-green"></span> Carbon Saved</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Offset opportunities -->
+        <div class="grid-card glass offset-card">
+          <h3>Active Carbon Removal Portfolio</h3>
+          <div class="portfolio-list">
+            <div class="portfolio-item">
+              <span class="item-name">🌲 Pacific Northwest Reforestation</span>
+              <span class="item-desc">High-quality forest management capturing carbon in local woodland soils.</span>
+              <button class="btn-primary" onclick="alert('Funding offset of 50kg for $1.75...')">Fund Offsets</button>
+            </div>
+            <div class="portfolio-item">
+              <span class="item-name">🌬️ Direct Air Capture (DAC)</span>
+              <span class="item-desc">Climeworks extraction filtering CO₂ directly from atmospheric air.</span>
+              <button class="btn-primary" onclick="alert('Funding offset of 20kg for $3.00...')">Fund Offsets</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Table Section -->
+      <section class="history-table-section glass">
+        <h3>Carbon Attributed Purchase Ledger</h3>
+        <div class="table-wrapper">
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Product Description</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>CO₂e Impact</th>
+                <th>Eco-Swap Status</th>
+              </tr>
+            </thead>
+            <tbody id="ledger-body">
+              <!-- Dynamically rendered purchase records -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Carbon Companion Integration Suite • Node Gateway Sync v1.0.0</span>
+    </footer>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
+</html>

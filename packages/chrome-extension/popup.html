@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg class="leaf-logo" viewBox="0 0 24 24">
+          <path d="M17 8C8 10 5.9 16.17 3.8 21c4-.2 9.9-1.68 15-7.22 3.96-4.3 2-10.78 2-10.78S17.8 5 17 8zM6 18c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" opacity=".15"/>
+          <path d="M2 22c0-5.52 4.48-10 10-10 1.93 0 3.72.55 5.25 1.5L20 10.75C20.67 9.17 21 7.33 21 5.37c0-2.42-1.96-4.37-4.38-4.37-2.92 0-5.5 1.5-6.9 3.75L6.25 1.25C4.75 2.78 4.2 4.57 4.2 6.5c0 5.52 4.48 10 10 10 .85 0 1.67-.1 2.47-.3L13.7 20.3C13.15 20.75 12.6 21 12 21c-5.52 0-10-4.48-10-10zM12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+        </svg>
+        <span>Carbon Companion</span>
+      </div>
+      <button id="btn-expand" class="btn-icon" title="Open Dashboard">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;">
+          <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="tab-scan">Active Scan</button>
+      <button class="tab-btn" data-tab="tab-wallet">Carbon Wallet</button>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content-container">
+      
+      <!-- Tab 1: Product Scan -->
+      <section id="tab-scan" class="tab-content active">
+        <div id="scan-loading" class="state-placeholder">
+          <div class="pulse-ring"></div>
+          <p>Scanning page for products...</p>
+        </div>
+        
+        <div id="scan-empty" class="state-placeholder hidden">
+          <svg viewBox="0 0 24 24" style="width:40px;height:40px;fill:#64748b;margin-bottom:8px;">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <p>No active product detected on this tab.</p>
+        </div>
+
+        <div id="scan-data" class="hidden">
+          <div class="product-card glass">
+            <h3 id="product-title" class="product-title">Product Title</h3>
+            <div id="score-badge" class="badge">CO₂e: 0.0 kg</div>
+            <div id="score-comparison" class="comparison-stmt">Comparison context...</div>
+          </div>
+
+          <!-- Alternatives -->
+          <div class="alternatives-section">
+            <h4>💡 Recommended Eco-Swaps</h4>
+            <div id="alternatives-list" class="alternatives-list">
+              <!-- Dynamically populated alternatives -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Carbon Wallet -->
+      <section id="tab-wallet" class="tab-content">
+        <div class="stats-grid">
+          <div class="stat-box glass">
+            <span class="stat-label">Total Footprint</span>
+            <span id="stat-total-spent" class="stat-val">0.0 kg</span>
+          </div>
+          <div class="stat-box glass">
+            <span class="stat-label">Carbon Saved</span>
+            <span id="stat-total-saved" class="stat-val green">0.0 kg</span>
+          </div>
+        </div>
+
+        <!-- Weekly Budget Tracker -->
+        <div class="budget-section glass">
+          <div class="budget-header">
+            <h4>Weekly Carbon Budget</h4>
+            <span id="budget-progress-label">0 / 0 kg</span>
+          </div>
+          <div class="progress-bar-container">
+            <div id="budget-progress-bar" class="progress-bar" style="width: 0%;"></div>
+          </div>
+          <div class="budget-controls">
+            <label for="limit-slider">Set Limit (kg):</label>
+            <input type="range" id="limit-slider" min="5" max="100" step="5" value="25">
+            <span id="limit-val">25</span>
+          </div>
+        </div>
+
+        <!-- Device Backup Sync -->
+        <div class="sync-section glass">
+          <div class="sync-header">
+            <span>Anonymous Sync Token</span>
+            <button id="btn-show-sync" class="btn-link">Reveal Key</button>
+          </div>
+          <div id="sync-key-box" class="sync-key-box hidden">
+            <code id="sync-backup-code">cc-backup-XXXXXX</code>
+            <p class="sync-desc">Enter this backup key on other browsers to sync your carbon savings.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Securely connected to Node API Gateway</span>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Carbon Companion",
+  "version": "1.0.0",
+  "description": "Universal Carbon-Intelligence layer: scans product details and visualizes lifecycle carbon impacts.",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "notifications",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://localhost:8080/*",
+    "http://localhost:8081/*",
+    "*://*.amazon.com/*",
+    "*://*.amazon.co.uk/*",
+    "*://*.amazon.in/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>",
+        "*://*.amazon.in/*",
+        "*://*.amazon.com/*",
+        "*://*.amazon.co.uk/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "128": "icon.png"
+  }
+}

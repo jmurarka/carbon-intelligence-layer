@@ -111,3 +111,31 @@ model TransportFactor {
 
   @@map("transport_factors")
 }
+
+// Synced extension users
+model User {
+  userId     String           @id @default(uuid()) @map("user_id")
+  backupCode String           @unique @map("backup_code")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  logs       UserCarbonLog[]
+
+  @@map("users")
+}
+
+// Synced carbon logs from extension transactions
+model UserCarbonLog {
+  logId            String   @id @default(uuid()) @map("log_id")
+  userId           String   @map("user_id")
+  productId        String   @map("product_id")
+  productTitle     String   @map("product_title")
+  categoryName     String   @map("category_name")
+  co2eKg           Decimal  @map("co2e_kg") @db.Decimal(10, 4)
+  swappedFromTitle String?  @map("swapped_from_title")
+  swappedFromCo2e  Decimal? @map("swapped_from_co2e") @db.Decimal(10, 4)
+  priceCents       Int      @map("price_cents")
+  createdAt        DateTime @default(now()) @map("created_at")
+  user             User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@map("user_carbon_logs")
+}
+

@@ -9,6 +9,7 @@ import {
 	getCommuteOptions,
 	mockCatalog
 } from './scoring';
+import syncRouter from './routes/sync';
 
 const prisma = new PrismaClient();
 
@@ -110,6 +111,10 @@ function rateLimiter(req: express.Request, res: express.Response, next: express.
 // Apply Auth and Rate Limiting globally for endpoints
 app.use(authenticateKey);
 app.use(rateLimiter);
+
+// Mount Chrome Extension Sync Routes
+app.use('/user', syncRouter);
+
 
 // Helper to query transport factor
 async function getTransportFactor(modeName: string) {

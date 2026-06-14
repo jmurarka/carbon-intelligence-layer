@@ -213,6 +213,8 @@
 		window.exports = undefined;
 		window.module = undefined;
 		window.define = undefined;
+		// Define process.env.NODE_ENV for react/jsx-runtime in UMD bundle
+		window.process = { env: { NODE_ENV: 'production' } };
 	</script>
 	<!-- UMD bundle of our newly created package -->
 	<script src="./dist/index.umd.js"></script>

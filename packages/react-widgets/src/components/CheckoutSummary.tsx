@@ -117,7 +117,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
 				</div>
 				<div style={styles.gridCol}>
 					<span style={styles.metricLabel}>Logistics / Delivery</span>
-					<span style={styles.metricVal}>{summary.logisticsCO2eKg} kg CO₂e</span>
+					<span style={styles.metricVal}>{summary.logisticsCo2eKg} kg CO₂e</span>
 				</div>
 				<div style={styles.gridColFull}>
 					<span style={styles.metricLabel}>Total carbon impact</span>
